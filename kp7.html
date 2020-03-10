@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <!-- Load Bootstrap -->
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <!-- Load Java Script -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/popper.min.js"></script>
+  <script src="assets/js/bootstrap.js"></script>
+  <script type="text/javascript">
+    function Play() {
+      document.getElementById('audioPlayer').play();
+    }
+
+    function Pause() {
+      document.getElementById('audioPlayer').pause();
+    }
+
+    function Stop() {
+      document.getElementById('audioPlayer').pause();
+      var audio = document.getElementById('audioPlayer');
+      audio.currentTime = 0;
+    }
+
+    function audioPlayer() {
+      var currentSong = 0;
+      $("#audioPlayer")[0].src = $("#playlist li a")[0];
+      $("#audioPlayer")[0].play();
+      $("#playlist li a").click(function(e) {
+        e.preventDefault();
+        $("#audioPlayer")[0].src = this;
+        $("#audioPlayer")[0].play();
+        $("#playlist li").removeClass("current-song");
+        currentSong = $(this).parent().index();
+        $(this).parent().addClass("current-song");
+      });
+
+      $("#audioPlayer")[0].addEventListener("ended", function() {
+        currentSong++;
+        if (currentSong == $("#playlist li a").length)
+          currentSong = 0;
+        $("#playlist li").removeClass("current-song");
+        $("#playlist li:eq(" + currentSong + ")").addClass("current-song");
+        $("#audioPlayer")[0].src = $("#playlist li a")[currentSong].href;
+        $("#audioPlayer")[0].play();
+      });
+    }
+  </script>
+  <style media="screen">
+    .center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 75%;
+    }
+
+    .peding {
+      margin-left: 10px;
+      margin-right: 5px;
+    }
+  </style>
+  <title>Pemutar Lagu</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="card col-sm-6">
+      <div class="card-header bg-info text-white text-center">
+        <h2>Play List</h2>
+      </div>
+      <div class="card-body col-sm-12">
+        <img src="anime.jpg" alt="" class="img-fluid center" onclick="n();">
+      </div>
+      <div class="row col-12 ">
+        <button type="button" class="btn btn-warning col peding" id="pause" onclick="Pause();">Pause</button>
+        <button type="button" class="btn btn-danger col peding" id="play" onclick="Play();">Play</button>
+        <button type="button" class="btn btn-success col peding" id="stop" onclick="Stop()">Stop</button>
+      </div>
+      <audio src="" controls autoplay style="display:none" preload="none" id="audioPlayer">
+        Sorry, your browser doesn't support html5!
+      </audio>
+      <ul id="playlist" class="list-group">
+        <li class="current-song list-group-item"><a href="AUD-20180921-WA0026.mp3">Zenzen</a></li>
+        <li class="list-group-item"><a href="Unravel(www.ost-anime.wapka.mobi).mp3">Unravel</a></li>
+        <li class="list-group-item"><a href="Forunesia THE DAY.mp3">THE DAY</a></li>
+      </ul>
+      <script src="https://code.jquery.com/jquery-2.2.0.js"></script>
+      <script src="audioPlayer.js"></script>
+      <script>
+        // loads the audio player
+        audioPlayer();
+      </script>
+    </div>
+  </div>
+</body>
+
+</html>
